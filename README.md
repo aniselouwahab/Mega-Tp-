@@ -63,7 +63,7 @@ Une fois les machines prêtes, connectez-vous à la machine de contrôle pour la
 vagrant ssh admin
 
 # Exécution du déploiement global depuis le dossier partagé
-cd /vagrant/ansible
+cd /vagrant
 ansible-playbook -i hosts.ini site.yml
 ```
 
