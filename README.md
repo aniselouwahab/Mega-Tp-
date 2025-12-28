@@ -91,12 +91,43 @@ sudo pcs cluster enable --all
 
 ## 5. Explication des Choix Techniques
 
-  - Haute Disponibilité : Utilisation de Pacemaker et Corosync pour gérer le basculement automatique des services (Nginx/Samba) et de l'IP flottante (VIP).
+ Cette infrastructure repose sur une architecture n-tier hautement disponible, où chaque service est protégé contre les défaillances matérielles et logicielles.
 
-  - Sécurisation : Application d'un "Hardening" strict : pare-feu firewalld, désactivation du root SSH sur Linux, et politiques de mots de passe complexes sur Windows AD.
+### A. Mécanisme de Haute Disponibilité (La Redondance)
 
-  - Monitoring : Centralisation sur Zabbix Server (Admin) avec des agents sur chaque nœud pour un suivi en temps réel des performances CPU/RAM et de la disponibilité des services.
+  Notre stratégie repose sur un cluster de type Actif/Passif piloté par la suite Linux HA :
 
+   - Corosync (La Communication) : Il sert de couche de messagerie. Il permet aux nœuds de s'envoyer des "heartbeats" (battements de cœur) pour confirmer qu'ils sont vivants. Si node01 ne répond plus, node02 le sait en quelques millisecondes.
+
+   - Pacemaker (Le Cerveau) : C'est le gestionnaire de ressources. C'est lui qui prend la décision de déplacer les services. Nous avons configuré des contraintes de colocation pour garantir que l'IP Virtuelle (VIP), le serveur Web Nginx et le partage Samba tournent toujours sur le même nœud.
+
+   - La VIP (IP Flottante) : L'adresse 192.168.159.200 est assignée dynamiquement par Pacemaker. En cas de panne, elle est "arrachée" au nœud défaillant et remontée sur le nœud sain. Pour l'utilisateur final, l'interruption est quasi invisible (perte d'un seul ping).
+
+
+### B. Sécurisation : Défense en Profondeur (Hardening)
+
+La sécurité n'est pas une option mais un socle intégré via Ansible :
+
+  - Isolation Réseau : Utilisation de firewalld avec une politique par défaut "drop". Seuls les flux critiques (VRRP pour le cluster, ports 80, 445, 10050) sont autorisés.
+
+  - SSH Hardening : Désactivation de l'accès root et forçage de l'authentification par clé SSH sur les nœuds Linux pour prévenir les attaques par force brute.
+
+  - Active Directory Hardening : Sur Windows, nous avons automatisé la configuration de politiques de mots de passe complexes et la désactivation de services non essentiels pour réduire la surface d'attaque du domaine.
+
+### C. Supervision Proactive avec Zabbix
+
+Le monitoring ne se contente pas de collecter des données, il sert d'outil d'aide à la décision :
+
+  - Monitoring de Service : Nous surveillons l'état du port 80. Si Nginx crash mais que la VM reste allumée, Zabbix le détecte immédiatement.
+
+  - Gestion des Triggers : Des seuils d'alerte (CPU > 80%, RAM > 90%) permettent d'anticiper une saturation du cluster avant que le basculement ne devienne critique.
+
+  - Alerte Visuelle : Un tableau de bord centralisé permet à l'administrateur de visualiser instantanément l'état de santé global des 4 VMs sur un seul écran.
+
+
+### D. Pourquoi cette architecture ?
+
+   Le choix de RedHat/AlmaLinux pour les nœuds de production s'explique par sa stabilité et son support natif des outils de clustering professionnels (pcs). L'utilisation d'une VM Admin sous Ubuntu permet de séparer les responsabilités : la gestion (Ansible) et la surveillance (Zabbix) ne sont pas impactées si le cluster de production subit une charge intense.
 
 
 ## 6. Preuves de Fonctionnement(Screenshots)
