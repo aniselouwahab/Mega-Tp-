@@ -21,6 +21,17 @@ TP_HA_DevOps/
     └── zabbix_agent.yml
 ```
 
+## Note sur l'Adressage Réseau (Choix de Configuration)
+
+Bien que le Vagrantfile prévoie un réseau privé statique (192.168.56.x), j'ai choisi d'effectuer le déploiement sur l'interface NAT (eth0) fournie par VMware (192.168.159.x).
+
+ Pourquoi ce choix ?
+
+- Stabilité du Provisioning : L'interface NAT est celle utilisée par Vagrant pour le SSH. En utilisant cette même interface pour Ansible et Zabbix, on élimine les risques de problèmes de routage entre les différentes cartes réseaux virtuelles.
+
+- Accès Internet Simplifié : Cela permet aux services (comme l'Agent Zabbix ou Nginx) de communiquer sur le même segment que celui qui télécharge les mises à jour, simplifiant ainsi la configuration du pare-feu (firewalld).
+
+- Réalité de l'Environnement : VMware Workstation priorise souvent son propre DHCP NAT. Utiliser ces adresses garantit que l'infrastructure est immédiatement fonctionnelle dès le **vagrant up**, sans configuration manuelle des routes statiques sur l'hôte.
 
 ## 2. Schéma d'Architecture Réseau
 
