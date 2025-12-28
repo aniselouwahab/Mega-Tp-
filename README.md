@@ -84,7 +84,11 @@ Le pare-feu firewalld est actif et ne laisse passer que les flux nécessaires (S
 
  ![image alt](https://github.com/aniselouwahab/Mega-Tp-/blob/44b1a8e8640452ccda8429ec7df58b5970f3c884/Capture%20d%E2%80%99%C3%A9cran%202025-12-28%20194314.png)
 
+### Mission 3 : Windows Server & Active Directory
 
+Rôles AD DS : Le gestionnaire de serveur montre que les services de domaine Active Directory sont installés et configurés.
+ ![image alt](https://github.com/aniselouwahab/Mega-Tp-/blob/1aa896fcf14c39780ac9d9bd48f1752002f68039/Capture%20d%E2%80%99%C3%A9cran%202025-12-28%20193543.png)
+ 
 ### Mission 4 : Supervision avec Zabbix
 
 Le Dashboard personnalisé sur la VM Admin affiche la santé de tout le parc.
