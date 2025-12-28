@@ -82,7 +82,7 @@ Le pare-feu firewalld est actif et ne laisse passer que les flux nécessaires (S
 
  - Configuration Agent : L'agent Zabbix 2 communique de manière sécurisée avec le serveur 
 
- ![image alt](https://github.com/aniselouwahab/Mega-Tp-/blob/9538ae729755b805b45ac10928453d94ad9eac3a/Capture%20d%E2%80%99%C3%A9cran%202025-12-28%20193543.png)
+ ![image alt](https://github.com/aniselouwahab/Mega-Tp-/blob/44b1a8e8640452ccda8429ec7df58b5970f3c884/Capture%20d%E2%80%99%C3%A9cran%202025-12-28%20194314.png)
 
 
 ### Mission 4 : Supervision avec Zabbix
