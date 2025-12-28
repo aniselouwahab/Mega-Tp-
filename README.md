@@ -67,6 +67,17 @@ cd /vagrant
 ansible-playbook -i hosts.ini site.yml
 ```
 
+## NB:
+
+    Si la commande **sudo pcs status** affiche une erreur de type unable to get cib, c'est que les services de cluster doivent être synchronisés manuellement après le premier déploiement :
+
+     ```bash
+# Sur node01 et node02
+sudo pcs cluster start --all
+sudo pcs cluster enable --all
+```
+   
+
 ## 5. Explication des Choix Techniques
 
   - Haute Disponibilité : Utilisation de Pacemaker et Corosync pour gérer le basculement automatique des services (Nginx/Samba) et de l'IP flottante (VIP).
