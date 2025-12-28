@@ -11,6 +11,7 @@ Ce projet consiste à transformer un déploiement manuel en une approche Infrast
 TP_HA_DevOps/
 ├── Vagrantfile
 ├── hosts.ini
+├── ansible.cfg
 ├── site.yml             
 ├── README.md               
 └── ansible/                                         
