@@ -1,0 +1,24 @@
+---
+- hosts: windows
+  gather_facts: no
+  tasks:
+    - name: "M3: Installer AD Domain Services"
+      win_feature:
+        name: AD-Domain-Services
+        include_management_tools: yes
+        state: present
+
+    - name: "M3: D??sactiver compte Guest"
+      win_user:
+        name: Guest
+        account_disabled: yes  # ??? CORRECTION ICI
+        state: present
+
+    - name: "M3: Activer Pare-feu Windows"
+      win_firewall:
+        state: enabled
+        profiles: ["Domain", "Private", "Public"]
+
+    - name: "M3: Politique mot de passe 12 caract??res"
+      win_shell: |
+        net accounts /minpwlen:12

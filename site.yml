@@ -1,0 +1,12 @@
+---
+- name: "MISSION 1 : Cluster HA"
+  import_playbook: ansible/cluster_ha.yml
+
+- name: "MISSION 4 : Zabbix Agent"
+  import_playbook: ansible/zabbix_agent.yml
+
+- name: "MISSION 2 : S??curit?? Linux"
+  import_playbook: ansible/security_linux.yml
+
+- name: "MISSION 3 : Windows AD"
+  import_playbook: ansible/windows_mission.yml

@@ -1,0 +1,72 @@
+---
+- hosts: nodes
+  become: yes
+  tasks:
+    # 1. CONFIGURATION DU PARE-FEU (FIREWALLD)
+    - name: "M2-1 : Installation de firewalld"
+      dnf:
+        name: firewalld
+        state: present
+
+    - name: "M2-2 : Activation de firewalld au d??marrage"
+      systemd:
+        name: firewalld
+        state: started
+        enabled: yes
+
+    - name: "M2-3 : Configuration restrictive des ports (SSH, HTTP, Cluster)"
+      firewalld:
+        service: "{{ item }}"
+        permanent: yes
+        state: enabled
+        immediate: yes
+      loop:
+        - ssh               # Port 22
+        - http              # Port 80 (Nginx)
+        - high-availability # Ports 2224, 3121, 5403-5405 (Cluster)
+
+    - name: "M2-4 : Ouverture du port Zabbix Agent (Mission 4)"
+      firewalld:
+        port: 10050/tcp
+        permanent: yes
+        state: enabled
+        immediate: yes
+
+    # 2. D??SACTIVATION DE LA CONNEXION SSH EN ROOT
+    - name: "M2-5 : Interdire la connexion directe en root via SSH"
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PermitRootLogin'
+        line: 'PermitRootLogin no'
+        state: present
+      notify: Restart SSH
+
+    # 3. MISE ?? JOUR AUTOMATIQUE DES PAQUETS DE S??CURIT??
+    - name: "M2-6 : Installation du service dnf-automatic"
+      dnf:
+        name: dnf-automatic
+        state: present
+
+    - name: "M2-7 : Configuration pour uniquement les mises a jour de securite"
+      lineinfile:
+        path: /etc/dnf/automatic.conf
+        regexp: '^upgrade_type ='
+        line: 'upgrade_type = security'
+
+    - name: "M2-8 : Activation du timer de mise a jour automatique"
+      systemd:
+        name: dnf-automatic.timer
+        state: started
+        enabled: yes
+
+    - name: "M2-9 : Execution immediate de la mise a jour de securite"
+      dnf:
+        name: '*'
+        state: latest
+        security: yes
+
+  handlers:
+    - name: Restart SSH
+      systemd:
+        name: sshd
+        state: restarted

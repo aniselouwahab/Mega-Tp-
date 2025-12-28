@@ -1,0 +1,37 @@
+---
+- hosts: nodes
+  become: yes
+  tasks:
+    - name: "M1: Activer depot High Availability"
+      shell: dnf config-manager --set-enabled highavailability
+      ignore_errors: yes
+
+    - name: "M1: Installer paquets HA, Web et Samba"
+      dnf:
+        name: [pacemaker, pcs, resource-agents, nginx, samba]
+        state: present
+
+    - name: "M1: Demarrer service PCSD"
+      systemd:
+        name: pcsd
+        state: started
+        enabled: yes
+
+    - name: "M1: Configurer mot de passe cluster"
+      shell: echo "admin123" | passwd --stdin hacluster
+
+- hosts: node01
+  become: yes
+  tasks:
+    - name: "M1: Configuration du Cluster et des Ressources"
+      shell: >
+        pcs host auth 192.168.159.154 192.168.159.155 -u hacluster -p admin123 &&
+        pcs cluster setup mycluster 192.168.159.154 192.168.159.155 --force &&
+        pcs cluster start --all &&
+        sleep 15 &&
+        pcs property set stonith-enabled=false &&
+        pcs resource create VIP ocf:heartbeat:IPaddr2 ip=192.168.159.200 cidr_netmask=24 &&
+        pcs resource create WebServer systemd:nginx &&
+        pcs resource create SambaServer systemd:smb &&
+        pcs resource group add HA-Group VIP WebServer SambaServer &&
+        pcs constraint colocation add HA-Group with VIP INFINITY
