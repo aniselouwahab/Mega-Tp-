@@ -71,7 +71,7 @@ ansible-playbook -i hosts.ini site.yml
 
     Si la commande **sudo pcs status** affiche une erreur de type unable to get cib, c'est que les services de cluster doivent être synchronisés manuellement après le premier déploiement :
 
-     ```bash
+```bash
 # Sur node01 et node02
 sudo pcs cluster start --all
 sudo pcs cluster enable --all
