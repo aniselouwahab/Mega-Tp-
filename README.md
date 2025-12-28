@@ -5,6 +5,22 @@
 
 Ce projet consiste à transformer un déploiement manuel en une approche Infrastructure as Code (IaC). L'objectif est de livrer une infrastructure hétérogène (Ubuntu, RedHat, Windows Server) capable de tolérer des pannes, sécurisée par défaut et surveillée en temps réel via Zabbix.
 
+## Structure du Dépôt
+
+```bash
+TP_HA_DevOps/
+├── Vagrantfile
+├── hosts.ini
+├── site.yml             
+├── README.md               
+└── ansible/                                         
+    ├── cluster_ha.yml      
+    ├── security_linux.yml  
+    ├── windows_mission.yml  
+    └── zabbix_agent.yml
+```
+
+
 ## 2. Schéma d'Architecture Réseau
 
 L'infrastructure est composée de 4 machines virtuelles interconnectées
