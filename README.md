@@ -8,7 +8,7 @@ Ce projet consiste à transformer un déploiement manuel en une approche Infrast
 ## Structure du Dépôt
 
 ```bash
-TP_HA_DevOps/
+Mega-Tp-/
 ├── Vagrantfile
 ├── hosts.ini
 ├── ansible.cfg
