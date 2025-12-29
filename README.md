@@ -177,7 +177,7 @@ Le Dashboard personnalisé sur la VM Admin affiche la santé de tout le parc.
 ![image alt](https://github.com/aniselouwahab/Mega-Tp-/blob/9538ae729755b805b45ac10928453d94ad9eac3a/Capture%20d%E2%80%99%C3%A9cran%202025-12-27%20002606.png)
 
 
-- Lien Agent-Serveur : Capture d’écran 2025-12-28 194243.png (Preuve de config agent).
+- Lien Agent-Serveur :  Preuve de config agent.
 
 ![image alt](https://github.com/aniselouwahab/Mega-Tp-/blob/9538ae729755b805b45ac10928453d94ad9eac3a/Capture%20d%E2%80%99%C3%A9cran%202025-12-28%20194243.png)
 ## License
